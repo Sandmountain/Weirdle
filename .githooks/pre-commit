@@ -1,0 +1,42 @@
+#!/bin/sh
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E "(.js|.jsx|.ts|.tsx|.json)$")
+ESLINT="$(git rev-parse --show-toplevel)/node_modules/.bin/eslint"
+
+if [[ "$STAGED_FILES" = "" ]]; then
+  exit 0
+fi
+
+PASS=true
+
+printf "\nValidating Code\n"
+
+
+# Check for eslint
+if [[ ! -x "$ESLINT" ]]; then
+  printf "\t\033[41mPlease install ESlint\033[0m (npm i --save-dev eslint)"
+  exit 1
+fi
+
+for FILE in $STAGED_FILES
+do
+  
+  "$ESLINT" --max-warnings 0 "$FILE" --no-ignore
+
+  if [[ $? -ne 0 ]]; then
+    printf "\n❌ FAIL: \t\033[41m$FILE\033[0m"
+    PASS=false
+  else
+    printf "🎉 Success: \t\033[32m$FILE\033[0m "
+  fi
+  printf "\n"
+done
+
+if ! $PASS; then
+  printf "\n\033[41mCOMMIT FAILED:\033[0m Your commit contains files that should pass ESLint but do not. Please fix the ESLint errors and try again.\n\n"
+  exit 1
+else
+  printf "\n"
+fi
+
+exit $?
