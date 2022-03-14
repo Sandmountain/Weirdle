@@ -1,13 +1,12 @@
 import React from "react";
 
 import "./App.css";
+import MainLayout from "./layout/MainLayout/MainLayout";
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>Default React App with Typescript template loaded</p>
-      </header>
+      <MainLayout />
     </div>
   );
 };
