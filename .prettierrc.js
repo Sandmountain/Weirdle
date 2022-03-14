@@ -5,7 +5,7 @@ module.exports = {
   trailingComma: "all",
   arrowParens: "avoid",
   useTabs: false,
-  printWidth: 100, // Default
+  printWidth: 80, // Default
   importOrder: [
     "^react$|^react-native$", // Sort all react components on top
     "<THIRD_PARTY_MODULES>", // Sort all third party in center
